@@ -35,6 +35,9 @@ export const reducer = (state, action) => {
     case "REMOVE_TOAST":
       if (action.toastId === undefined) return { ...state, toasts: [] }
       return { ...state, toasts: state.toasts.filter((t) => t.id !== action.toastId) };
+
+    default:
+      return state;
   }
 }
 
