@@ -4,7 +4,6 @@ import Sidebar from './components/Sidebar';
 import ChatHeader from './components/ChatHeader';
 import MessageList from './components/MessageList';
 import Composer from './components/Composer';
-import { initialChats, sampleResponses } from './mock';
 import { Toaster } from './components/ui/toaster';
 import { useToast } from './hooks/use-toast';
 
