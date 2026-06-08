@@ -9,6 +9,15 @@ import { useToast } from './hooks/use-toast';
 
 const STORAGE_KEY = 'ai-code-assistant-state-v1';
 
+const initialChats = [
+  {
+    id: "chat-1",
+    title: "New Chat",
+    messages: [],
+    createdAt: new Date().toISOString()
+  }
+];
+
 const loadState = () => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -30,7 +39,7 @@ function App() {
 
   useEffect(() => { saveState({ chats, activeChatId }); }, [chats, activeChatId]);
 
-  const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
+  const activeChat =chats?.find((c) => c.id === activeChatId) || chats?.[0];
 
   const handleNewChat = () => {
     const id = `chat-${Date.now()}`;
