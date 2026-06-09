@@ -7,6 +7,8 @@ import Composer from './components/Composer';
 import { Toaster } from './components/ui/toaster';
 import { useToast } from './hooks/use-toast';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const STORAGE_KEY = 'ai-code-assistant-state-v1';
 
 const initialChats = [
@@ -60,7 +62,7 @@ function App() {
     setIsTyping(true);
 
     try {
-      const response = await fetch(`/api/chat?msg=${encodeURIComponent(text)}`);
+      const response = await fetch(`${API_URL}/api/chat?msg=${encodeURIComponent(text)}`);
       let assistantText = '';
 
       if (!response.ok) {
