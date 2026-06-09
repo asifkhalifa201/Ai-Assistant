@@ -7,7 +7,7 @@ import Composer from './components/Composer';
 import { Toaster } from './components/ui/toaster';
 import { useToast } from './hooks/use-toast';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://ai-assistant-backend-production-e37f.up.railway.app"; 
 
 const STORAGE_KEY = 'ai-code-assistant-state-v1';
 
