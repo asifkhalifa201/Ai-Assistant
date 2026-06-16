@@ -7,7 +7,8 @@ import Composer from './components/Composer';
 import { Toaster } from './components/ui/toaster';
 import { useToast } from './hooks/use-toast';
 
-const API_URL = "https://ai-assistant-backend-production-e37f.up.railway.app"; 
+const API_URL = "https://ai-assistant-backend-production-e37f.up.railway.app";
+// const API_URL = "http://localhost:8080";
 
 const STORAGE_KEY = 'ai-code-assistant-state-v1';
 
@@ -29,7 +30,7 @@ const loadState = () => {
 };
 
 const saveState = (state) => {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { }
 };
 
 function App() {
@@ -37,19 +38,24 @@ function App() {
   const [chats, setChats] = useState(persisted?.chats || initialChats);
   const [activeChatId, setActiveChatId] = useState(persisted?.activeChatId || initialChats[0].id);
   const [isTyping, setIsTyping] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => { saveState({ chats, activeChatId }); }, [chats, activeChatId]);
 
-  const activeChat =chats?.find((c) => c.id === activeChatId) || chats?.[0];
+  const activeChat = chats?.find((c) => c.id === activeChatId) || chats?.[0];
 
   const handleNewChat = () => {
     const id = `chat-${Date.now()}`;
-    setChats((prev) => [{ id, title: 'Chat', messages: [], createdAt: new Date().toISOString() }, ...prev]);
+    setChats((prev) => [{ id, title: 'New Chat', messages: [], createdAt: new Date().toISOString() }, ...prev]);
     setActiveChatId(id);
+    setIsSidebarOpen(false);
   };
 
-  const handleSelectChat = (id) => setActiveChatId(id);
+  const handleSelectChat = (id) => {
+    setActiveChatId(id);
+    setIsSidebarOpen(false);
+  };
 
   const handleSend = async (text) => {
     const userMsg = { id: `m-${Date.now()}`, role: 'user', content: text };
@@ -120,7 +126,7 @@ function App() {
     setChats((prev) => {
       const filtered = prev.filter((c) => c.id !== activeChatId);
       if (filtered.length === 0) {
-        const fresh = { id: `chat-${Date.now()}`, title: 'Chat', messages: [], createdAt: new Date().toISOString() };
+        const fresh = { id: `chat-${Date.now()}`, title: 'New Chat', messages: [], createdAt: new Date().toISOString() };
         setActiveChatId(fresh.id);
         return [fresh];
       }
@@ -131,11 +137,27 @@ function App() {
   };
 
   return (
-    <div className="App h-screen w-screen flex bg-white overflow-hidden">
-      <Sidebar chats={chats} activeChatId={activeChatId} onNewChat={handleNewChat} onSelectChat={handleSelectChat} />
+    <div className="App h-screen w-screen flex bg-white overflow-hidden relative">
+      <Sidebar
+        chats={chats}
+        activeChatId={activeChatId}
+        onNewChat={handleNewChat}
+        onSelectChat={handleSelectChat}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-40 md:hidden transition-opacity duration-300 backdrop-blur-xs"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       <main className="flex-1 flex flex-col min-w-0">
         <ChatHeader
-          title="New Chat"
+          title={activeChat?.title || 'New Chat'}
+          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
           onNewChat={handleNewChat}
           onClear={handleClear}
           onExport={handleExport}

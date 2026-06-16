@@ -2,9 +2,12 @@ import React from 'react';
 import { Bot, Plus, MessageSquare } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat }) => {
+const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat, isOpen, onClose }) => {
   return (
-    <aside className="w-[260px] shrink-0 bg-[#0d0d0f] text-white flex flex-col border-r border-black/40">
+    <aside className={cn(
+      "fixed inset-y-0 left-0 w-[260px] shrink-0 bg-[#0d0d0f] text-white flex flex-col border-r border-black/40 transition-transform duration-300 ease-in-out z-50 md:relative md:translate-x-0 md:flex",
+      isOpen ? "translate-x-0" : "-translate-x-full"
+    )}>
       <div className="px-5 pt-5 pb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-[#7c3aed] flex items-center justify-center shadow-md">
           <Bot className="w-5 h-5 text-white" strokeWidth={2.25} />

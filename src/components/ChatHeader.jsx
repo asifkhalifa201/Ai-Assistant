@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown, Trash2 } from 'lucide-react';
+import { ChevronDown, Trash2, Menu, Plus } from 'lucide-react';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuTrigger, DropdownMenuSeparator,
@@ -10,20 +10,30 @@ import {
   AlertDialogTitle, AlertDialogTrigger,
 } from './ui/alert-dialog';
 
-const ChatHeader = ({ title, onNewChat, onClear, onExport, onRename, onDelete }) => {
+const ChatHeader = ({ title, onToggleSidebar, onNewChat, onClear, onExport, onRename, onDelete }) => {
   return (
-    <header className="h-[78px] px-8 flex items-center justify-between border-b border-zinc-200 bg-white">
-      <div>
-        <h1 className="text-[22px] font-semibold text-zinc-900 leading-tight">{title}</h1>
-        <p className="text-[13px] text-zinc-500 mt-0.5">AI-powered coding assistant</p>
+    <header className="h-[78px] px-4 md:px-8 flex items-center justify-between border-b border-zinc-200 bg-white">
+      <div className="flex items-center gap-3 min-w-0">
+        <button
+          onClick={onToggleSidebar}
+          className="md:hidden h-10 w-10 rounded-md border border-zinc-200 hover:bg-zinc-50 text-zinc-700 flex items-center justify-center transition-colors duration-150 shrink-0"
+          aria-label="Toggle Sidebar"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <div className="min-w-0">
+          <h1 className="text-[18px] md:text-[22px] font-semibold text-zinc-900 leading-tight truncate">{title}</h1>
+          <p className="text-[12px] md:text-[13px] text-zinc-500 mt-0.5 truncate">AI-powered coding assistant</p>
+        </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
         <button
           onClick={onNewChat}
-          className="h-10 px-4 rounded-md bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium text-[14px] transition-colors duration-200 shadow-sm"
+          className="h-10 px-3 md:px-4 rounded-md bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium text-[14px] transition-colors duration-200 shadow-sm flex items-center gap-1.5"
         >
-          New Chat
+          <Plus className="w-4 h-4" />
+          <span className="hidden md:inline">New Chat</span>
         </button>
 
         <DropdownMenu>
