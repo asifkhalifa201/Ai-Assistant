@@ -6,7 +6,7 @@ export function Toaster() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-3">
-      {toasts.map((toast) => (
+      {toasts.filter((toast) => toast.open !== false).map((toast) => (
         <div
           key={toast.id}
           className="w-[320px] rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl"
